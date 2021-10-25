@@ -1,9 +1,7 @@
 # To_do_list_App
+in terminal copy and paste each of the following: 
 
 
-How to run
-
-in terminal
 pip install flask
 
 pip install flask_session
