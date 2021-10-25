@@ -83,23 +83,13 @@ def create_app(test_config=None):
     def add_new_item(to_do_list):
         print(request.method)
         if request.method == "POST":
-            print("HEY!")
-            print("posting")
-
             items = request.form
             items_dict = items.to_dict()
-            print('!!!')
-            print(items_dict)
             items_list = list(items_dict.values())
-            print(items_list)
-            print("???")
             
             if request.form.get("add_item"):
                 new_item = request.form['new_item']
-                print("NEW ITEM: ")
-                print(new_item)
                 to_do_list.append(new_item)
-                print(to_do_list)
                 session['to_do_list'] = to_do_list
                 session['action'] = '/home'
 
@@ -123,64 +113,18 @@ def create_app(test_config=None):
     def home():
         cross_off_or_go_back(session['to_do_list'])
         to_do_list = session['to_do_list']
-
         return render_template('index.html', to_do_list = to_do_list, action = session['action'])
 
 
 
     @app.route("/add_new_item", methods=['GET','POST'])
     def add_new():
-        print("Hello??")
         session['action'] = ''
         to_do_list = session['to_do_list']
         add_new_item(to_do_list)
 
 
         return render_template('add_new_item.html', action = session['action']) 
-
-
-
-
-
-
-    @app.route("/classic_mode_4", methods=['GET','POST'])
-    def classic_mode4():
-        score = session['score']
-    #Change the score depending on whether you clicked a, b, or c using the button_clicking function
-    #Change the text when clicked using the button_clicking function
-    #Third Question
-        new_intro_text =  'Someone hands you a squishy and tells you to hide it'
-        new_a_text = 'Ignore them and keep heading to class'
-        new_b_text = "Run to hide it in Mr. Seney's office"
-        new_c_text = 'Take it and head back to the library'
-        message = 'Q5'
-        html_page = 'end_screen.html'
-        
-        button_clicking(new_intro_text, new_a_text, new_b_text, new_c_text, 3,4,5, message,  html_page)
-        
-        print(session['intro_text'])
-        
-        return render_template(session['go_to_this_html_page'], intro = session['intro_text'], a_text = session['choice_a_text'], b_text = session['choice_b_text'], c_text = session['choice_c_text']) 
-
-
-
-    @app.route("/end_screen/", methods=['POST'])
-    def ending():  
-        score = session['score']
-        if score < 14:
-            last_scene = render_template('end_screen.html', ending_text = 'Sorry, you got in trouble anyway...')
-        elif score == 15 or score == 16 or score == 17:
-            last_scene = render_template('end_screen.html', ending_text = 'I have no idea but you escaped!!!!')
-        else:
-            last_scene = render_template('end_screen.html', ending_text = "Uhhh.. You just got yourself suspended...")
-
-        return last_scene
-
-    @app.route("/trial/", methods=['POST', 'GET'])
-    def trial():  
-        
-        return render_template('trial.html',  intro = session['intro_text'], a_text = session['choice_a_text'], b_text = session['choice_b_text'], c_text = session['choice_c_text'])
-
 
     
 
